@@ -1,13 +1,4 @@
 # write your code here
-cells = input('Enter cells: ')
-cells = [cells[i] for i in range(9)]
-cells = [[cells[i * 3 + j] for j in range(3)] for i in range(3)]
-print('---------')
-for i in range(3):
-    print(f'| {cells[i][0]} {cells[i][1]} {cells[i][2]} |')
-print('---------')
-
-
 def is_user_win(u, c):
     if c[0][0] == c[0][1] == c[0][2] == u:
         return True
@@ -52,4 +43,44 @@ def game_result(c):
     return 'Game not finished'
 
 
-print(game_result(cells))
+cells_inp = input('Enter cells: ')
+
+
+def print_cells():
+    cells = [cells_inp[i] for i in range(9)]
+    cells = [c if c in ['X', 'O'] else ' ' for c in cells]
+    cells = [[cells[i * 3 + j] for j in range(3)] for i in range(3)]
+    print('---------')
+    for i in range(3):
+        print(f'| {cells[i][0]} {cells[i][1]} {cells[i][2]} |')
+    print('---------')
+    return cells
+
+
+cells = print_cells()
+
+while True:
+    try:
+        r, c = tuple(map(int, input('Enter the coordinates: ').split()))
+    except:
+        print('You should enter numbers!')
+        continue
+
+    if not r in [1, 2, 3] or not c in [1, 2, 3]:
+        print('Coordinates should be from 1 to 3!')
+        continue
+
+    c_index = (r - 1) * 3 + c - 1
+
+    ch = cells_inp[c_index]
+
+    if ch == '_':
+        lst = list(cells_inp)
+        lst[c_index] = 'X'
+        cells_inp = ''.join(lst)
+        cells = print_cells()
+        break
+    else:
+        print('This cell is occupied! Choose another one!')
+
+# print(game_result(cells))
