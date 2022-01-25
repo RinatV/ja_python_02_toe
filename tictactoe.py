@@ -43,7 +43,7 @@ def game_result(c):
     return 'Game not finished'
 
 
-cells_inp = input('Enter cells: ')
+cells_inp = '_' * 9
 
 
 def print_cells():
@@ -59,9 +59,14 @@ def print_cells():
 
 cells = print_cells()
 
+player = 'X'
+
 while True:
     try:
-        r, c = tuple(map(int, input('Enter the coordinates: ').split()))
+        inp_str = input('Enter the coordinates: ').split()
+        if not inp_str:
+            continue
+        r, c = tuple(map(int, inp_str))
     except:
         print('You should enter numbers!')
         continue
@@ -76,10 +81,15 @@ while True:
 
     if ch == '_':
         lst = list(cells_inp)
-        lst[c_index] = 'X'
+        lst[c_index] = player
         cells_inp = ''.join(lst)
         cells = print_cells()
-        break
+        result = game_result(cells)
+        if result.endswith('wins') or result == 'Draw':
+            print(result)
+            break
+        player = {'O': 'X', 'X': 'O'}.get(player)
+        # break
     else:
         print('This cell is occupied! Choose another one!')
 
